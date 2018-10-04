@@ -19,7 +19,7 @@ class Loginform extends React.Component{
     render(){
         const calculeteStrength = function (password) {
             let strength = 0;
-             const regExp = [
+             const strengthRules = [
                 /[A-Z]/,
                 /[a-z]/,
                 /[0-9]/,
@@ -27,7 +27,33 @@ class Loginform extends React.Component{
                 /.{14}/,
                 /[!-//:-@[-`{-ÿ]/
             ];
-        }
+            strengthRules.forEach(function (strengthRules) {
+                if (strengthRules.test(password)) {
+                    strength++;
+                }
+            });
+            return {
+                value: strength,
+                max: strengthRules.length
+            };
+        };
+        const checkPasswordStrength = function (password) {
+            let progress = document.querySelector('passwordStrength'), strength = calculeteStrength(this.value);
+            progress.value = strength.value;
+            progress.max = strength.max;
+        };
+        const showProgress = function() {
+            let progress = document.querySelector('progress');
+            progress.style.visibility = 'visible';
+        };
+        const hideProgress = function() {
+            let progress = document.querySelector('progress');
+            progress.style.visibility = 'hidden';
+        };
+        let input = document.querySelector('passwordInput');
+        input.addEventListener('keyup', checkPasswordStrength);
+        input.addEventListener('click', showProgress);
+        input.addEventListener('glur', Progress);
         
         return (
             <div className="container">
